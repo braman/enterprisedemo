@@ -1,0 +1,46 @@
+<project name="Demo1" default="test">
+
+    <target name="test" depends="war, deploy">
+        <echo>Hello World</echo>
+    </target>
+
+    <target name="war" depends="compile">
+        <echo>Starting zip</echo>
+        <move todir="webapp/WEB-INF/classes">
+            <fileset dir="build" includes="**/*">
+            </fileset>
+        </move>
+        <zip basedir="webapp" destfile="dist/myapp.war"
+            includes="**/*">
+        </zip>
+        <echo>Ending zip</echo>
+    </target>
+    
+    <target name="deploy">
+        <move file="dist/myapp.war" todir="C:\DEV\tools\apache\tomcat\7.45\webapps">
+        </move>
+    </target>
+
+    <target name="undeploy">
+        <delete file="C:\DEV\tools\apache\tomcat\7.45\webapps\myapp.war"></delete>
+    </target>
+	
+    <path id="classpath">
+        <fileset dir="C:\DEV\tools\apache\tomcat\7.45\lib">
+            <include name="**/*.jar" />
+        </fileset>
+
+        <fileset dir="${basedir}/lib">
+            <include name="**/*.jar" />
+        </fileset>
+
+    </path>
+    
+    <target name="compile">
+        <javac srcdir="src" destdir="build" debug="true"
+            classpathref="classpath">
+            <!-- TODO -->
+        </javac>
+    </target>
+    
+</project>
